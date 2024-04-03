@@ -1,14 +1,12 @@
-var btn = document.querySelector("#change-cat");
-var img = document.querySelector("#cat");
+const newCatBtn = document.getElementById('new-cat-btn');
+const catImage = document.getElementById('cat-image');
 
-btn.addEventListener("click", function() {
-  var XHR = new XMLHttpRequest();
-  
-  XHR.onreadystatechange = function() {
-    if (XHR.readyState == 4 && XHR.status == 200) {
-      img.src = JSON.parse(XHR.responseText).file;  
-    }
-  }
-  XHR.open("GET", "https://aws.random.cat/meow");
-  XHR.send();
+newCatBtn.addEventListener('click', () => {
+  fetch('https://api.thecatapi.com/v1/images/search')
+    .then(response => response.json())
+    .then(data => {
+      const imageUrl = data[0].url;
+      catImage.src = imageUrl;
+    })
+    .catch(error => console.error('Error fetching cat:', error));
 });
